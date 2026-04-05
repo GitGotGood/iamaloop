@@ -1,0 +1,39 @@
+---
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header class="border-b border-white/10">
+  <nav class="max-w-3xl mx-auto px-6 py-5 flex items-center justify-between">
+    <a href="/" class="font-semibold tracking-tight text-lg">
+      <span class="text-[var(--color-accent)]">I</span>AmALoop
+    </a>
+    <ul class="flex gap-6 text-sm">
+      <li>
+        <a
+          href="/projects"
+          class={isActive('/projects') ? 'text-white' : 'text-[var(--color-muted)] hover:text-white'}
+        >
+          Projects
+        </a>
+      </li>
+      <li>
+        <a
+          href="/articles"
+          class={isActive('/articles') ? 'text-white' : 'text-[var(--color-muted)] hover:text-white'}
+        >
+          Articles
+        </a>
+      </li>
+      <li>
+        <a
+          href="/about"
+          class={isActive('/about') ? 'text-white' : 'text-[var(--color-muted)] hover:text-white'}
+        >
+          About
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

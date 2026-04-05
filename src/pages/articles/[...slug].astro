@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={`${article.data.title} — IAmALoop`} description={article.data.description}>
+  <article>
+    <header class="mb-8">
+      <time class="text-xs uppercase tracking-wider text-[var(--color-muted)]">
+        {fmt(article.data.date)}
+      </time>
+      <h1 class="text-4xl font-bold tracking-tight mt-2">{article.data.title}</h1>
+      <p class="text-lg text-[var(--color-muted)] mt-2">{article.data.description}</p>
+    </header>
+    <div class="prose prose-invert max-w-none">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
